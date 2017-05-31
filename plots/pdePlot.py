@@ -1,4 +1,4 @@
-import petaloAnalysis
+#import petaloAnalysis
 from ROOT import *
 import numpy as np
 import pandas as pd
@@ -24,16 +24,16 @@ errors = []
 
 for pde in xrange(10,105,5):
 #    result = petalo.computeDTOF(vel)
-    result = collection.find_one({'vel': 210, 'pde': pde, 'minwl': 0, 'maxwl': 1500, 'asic': 0, 'sptr': 0})
-        
+    result = collection.find_one({'vel': 210, 'pde': pde, 'minwl': 150, 'maxwl': 1500, 'asic': 0, 'sptr': 0, "avg": {"$exists": False}})
+
     gStyle.SetOptStat(1110)
     gStyle.SetOptFit(1)
     h1 = TH1F("h1", "PETALO", 80,-100,100)
     for n in result['dtof']:
         h1.Fill(n)
-    
+
     gauF1 = TF1("gauF1","gaus",-200,200)
-    h1.Fit("gauF1","","e",-15,15);
+    h1.Fit("gauF1","","e",-10,10);
     h1.Draw()
     c1.Print('plots/pde/' + str(pde) + '.png')
 
@@ -57,7 +57,7 @@ pdePlot.GetXaxis().SetTitle("PDE (%)");
 pdePlot.GetXaxis().SetLimits(0,100);
 pdePlot.GetYaxis().SetTitle("CRT (ps)");
 pdePlot.SetMinimum(0.);
-pdePlot.SetMaximum(20.);
+pdePlot.SetMaximum(10.);
 
 
 
